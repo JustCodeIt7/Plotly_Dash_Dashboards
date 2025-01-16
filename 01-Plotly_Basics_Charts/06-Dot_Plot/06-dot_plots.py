@@ -1,18 +1,41 @@
+# %% [markdown]
+"""
+# Dot Plot
+"""
 #%%
 import plotly.express as px
+import pandas as pd
+
+
+# %% [markdown]
+"""
+## Create a sample dataset
+"""
 
 # %%
-# Create a sample dataset
-data = {
+# Sample data
+data = pd.DataFrame({
     "Category": ["A", "B", "C", "D"],
-    "Values": [10, 15, 7, 20]
-}
+    "Values": [10, 20, 30, 40]
+})
 
-# Create a basic dot plot
-fig = px.scatter(data, x="Category", y="Values", title="Basic Dot Plot", labels={"x": "Category", "y": "Values"})
+# Creating a scatter plot (dot plot)
+fig = px.scatter(
+    data,
+    x="Category",
+    y="Values",
+    title="Basic Dot Plot",
+    labels={"Category": "Category", "Values": "Values"}
+)
 
-# Show the plot
+# Showing the plot
 fig.show()
+
+# %% [markdown]
+"""
+## Dot Plot with Multiple Categories
+"""
+
 
 # %%
 import plotly.express as px
@@ -51,6 +74,11 @@ fig = px.scatter(
 )
 
 fig.show()
+# %% [markdown]
+"""
+## Styled Dot Plot
+"""
+
 # %%
 import plotly.express as px
 import pandas as pd
@@ -79,7 +107,4 @@ fig = px.scatter(
 
 # Show the plot
 fig.show()
-# %%
-
-
 # %%
