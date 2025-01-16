@@ -10,9 +10,10 @@ import numpy as np
 # In this example, we'll simulate data representing employee
 # demographics and salaries within a company.
 #   - 'Age': random ages between 20 and 60
-#   - 'Salary': random salaries between 30k and 150k
+#   - 'Salary': random salaries between 30d 150k
 #   - 'Department': categorical feature with 3 departments
 #   - 'PerformanceScore': numeric score between 1 and 10
+
 
 np.random.seed(42)  # For reproducible random numbers
 
