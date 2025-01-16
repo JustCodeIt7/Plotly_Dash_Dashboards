@@ -1,6 +1,13 @@
 # %% [markdown]
 """ 
 # Pie Chart in Plotly
+
+This tutorial demonstrates three different approaches to creating pie charts using Plotly:
+1. A basic interactive pie chart using Plotly Express
+2. A customized donut chart using Plotly Graph Objects
+3. Comparative pie charts using subplots
+
+Each example builds upon the previous one, introducing new concepts and customization options.
 """
 
 # %%
@@ -29,6 +36,21 @@ df = pd.DataFrame({
 # %% [markdown]
 """
 ## Example 1: Basic Interactive Pie Chart
+
+This example demonstrates the fundamentals of creating a pie chart using Plotly Express (px).
+Key features:
+- Uses the high-level Plotly Express API for quick and easy plotting
+- Includes hover data with multiple variables (revenue and growth)
+- Custom labels for better readability
+- Interactive features like hover tooltips
+- Custom color scheme using qualitative colors
+- Percentage and label display inside the segments
+
+Key customizations:
+- Text positioning inside segments
+- Hover template with formatted values
+- Centered title with custom font size
+- No legend (as labels are inside segments)
 """
 
 # %%
@@ -68,6 +90,23 @@ fig.show()
 # %% [markdown]
 """
 ## Example 2: Custom Donut Chart
+
+This example shows how to create a more sophisticated donut chart using Plotly Graph Objects (go).
+Key features:
+- Uses the lower-level Graph Objects API for more detailed control
+- Converts pie chart to donut chart using the 'hole' parameter
+- Pulls out segments with large market share (>30%)
+- Custom marker styling with white borders
+- Central text annotation
+- Horizontal legend placement
+
+Advanced customizations:
+- Donut hole size of 60%
+- Outside text positioning
+- Conditional segment pulling
+- Custom marker colors and border styling
+- Centered annotations in the donut hole
+- Horizontal legend at the top
 """
 
 # %%
@@ -114,6 +153,25 @@ fig.show()
 # %% [markdown]
 """
 ## Example 3: Comparative Pie Charts
+
+This example demonstrates how to create side-by-side pie charts for comparison using subplots.
+Key features:
+- Creates two pie charts side by side using make_subplots
+- Compares market share data between two years
+- Consistent styling across both charts
+- Shared legend for both charts
+- Custom annotations for each chart
+
+Advanced techniques:
+- Using subplot specifications with 'domain' type
+- Consistent color schemes across charts
+- Donut style with 40% hole
+- Centered text labels
+- Custom positioning of titles and annotations
+- Horizontal legend centered at the top
+- Wider layout for better comparison
+
+Note: The data for 2024 is randomly generated with a different seed to show variation.
 """
 
 # %%
@@ -182,5 +240,33 @@ fig.update_layout(
 )
 
 fig.show()
+
+# %% [markdown]
+"""
+## Summary of Key Concepts
+
+1. Plotly Express (px.pie):
+   - Quick and easy way to create basic pie charts
+   - Good for simple visualizations with built-in interactivity
+   - Excellent for initial data exploration
+
+2. Plotly Graph Objects (go.Pie):
+   - More control over chart elements
+   - Better for custom styling and advanced features
+   - Required for donut charts and pulled segments
+
+3. Subplots with make_subplots:
+   - Enables side-by-side comparison
+   - Allows for complex layouts
+   - Maintains consistent styling across multiple charts
+
+Best Practices:
+- Use clear labels and titles
+- Include interactive elements (hover data)
+- Maintain consistent styling
+- Consider using donut charts for better readability
+- Add appropriate annotations for context
+- Position legends for optimal space usage
+"""
 
 # %%

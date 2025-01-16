@@ -171,3 +171,11 @@ cython_debug/
 .pypirc
 !/.idea/
 !/.idea/modules.xml
+
+*-dev.py
+*-dev.ipynb
+*-dev.html
+*-dev.txt
+*-dev.csv
+*-dev.json
+*-dev.md

@@ -1,7 +1,15 @@
+# %% [markdown]
+"""
+# Bubble Charts
+"""
 # %%
 import plotly.express as px
 
-# Simple Bubble Chart
+# %% [markdown]
+"""
+## Simple Bubble Chart
+"""
+#%%
 import plotly.graph_objects as go
 
 fig = go.Figure(data=[go.Scatter(
@@ -11,9 +19,12 @@ fig = go.Figure(data=[go.Scatter(
 ])
 
 fig.show()
-# %%
-# Setting Marker Size and Color
+# %% [markdown]
+"""
+## Setting Marker Size and Color
+"""
 
+# %%
 import plotly.graph_objects as go
 
 fig = go.Figure(data=[go.Scatter(
@@ -27,9 +38,13 @@ fig = go.Figure(data=[go.Scatter(
 )])
 
 fig.show()
+# %% [markdown]
+"""
+## Scaling the Size of Bubble Charts
+"""
 
 # %%
-# Scaling the Size of Bubble Charts
+
 import plotly.graph_objects as go
 
 size = [20, 40, 60, 80, 100, 80, 60, 40, 20, 40]
@@ -46,10 +61,13 @@ fig = go.Figure(data=[go.Scatter(
 )])
 
 fig.show()
+# %% [markdown]
+"""
+## Hover Text with Bubble Charts
+"""
 
 #%%
 
-# Hover Text with Bubble Charts
 import plotly.graph_objects as go
 
 fig = go.Figure(data=[go.Scatter(
@@ -81,9 +99,11 @@ fig = go.Figure(data=[go.Scatter(
 )])
 
 fig.show()
-
+# %% [markdown]
+"""
+## Categorical Bubble Chart
+"""
 # %%
-# Categorical Bubble Chart
 import plotly.graph_objects as go
 
 fig = go.Figure(data=[go.Scatter(
