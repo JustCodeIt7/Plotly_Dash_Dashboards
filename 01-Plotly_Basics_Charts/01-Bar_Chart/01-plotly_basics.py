@@ -3,6 +3,7 @@
 # PLOTLY BAR CHART TUTORIAL
 
 1. Install plotly (in your terminal or command prompt):
+
    pip install plotly
 """
 #%%
@@ -25,7 +26,6 @@ df = pd.DataFrame(data)
 print(df)
 
 # %%
-
 #######################################################
 # 4. Basic Bar Chart
 #######################################################
@@ -37,9 +37,8 @@ fig_basic = px.bar(
     title='Total Sales by Category (Basic Bar Chart)'
 )
 fig_basic.show()
-
 # %%
-
+# %%
 #######################################################
 # 5. Custom Bar Chart with Color and Hover Data
 #######################################################
@@ -57,7 +56,7 @@ fig_custom = px.bar(
     hover_data=['Category', 'Sales']
 )
 fig_custom.show()
-
+# %%
 #######################################################
 # 6. Grouped Bar Chart
 #######################################################
@@ -83,7 +82,7 @@ fig_stacked = px.bar(
     title='Sales by Category and Quarter (Stacked Bar Chart)'
 )
 fig_stacked.show()
-
+# %%
 #######################################################
 # 8. Horizontal Bar Chart
 #######################################################
@@ -97,7 +96,7 @@ fig_horizontal = px.bar(
     color='Category'
 )
 fig_horizontal.show()
-
+# %%
 #######################################################
 # 9. Advanced Layout Customization
 #######################################################
