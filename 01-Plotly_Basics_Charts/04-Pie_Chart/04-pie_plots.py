@@ -21,17 +21,14 @@ import numpy as np
 # Generate sample market data
 np.random.seed(42)  # For reproducibility
 
-companies = ['Apple', 'Samsung', 'Google', 'Huawei', 'Others']
+companies = ["Apple", "Samsung", "Google", "Huawei", "Others"]
 market_share = np.random.dirichlet(np.ones(5)) * 100
 revenue = np.random.uniform(10000, 50000, 5)
 growth = np.random.uniform(-10, 30, 5)
 
-df = pd.DataFrame({
-    'company': companies,
-    'market_share': market_share,
-    'revenue': revenue,
-    'growth': growth
-})
+df = pd.DataFrame(
+    {"company": companies, "market_share": market_share, "revenue": revenue, "growth": growth}
+)
 
 # %% [markdown]
 """
@@ -57,33 +54,29 @@ Key customizations:
 # Create basic interactive pie chart
 fig = px.pie(
     df,
-    values='market_share',
-    names='company',
-    title='Global Market Share Distribution',
-    hover_data=['revenue', 'growth'],
-    labels={'revenue': 'Revenue (M$)', 
-            'growth': 'YoY Growth (%)',
-            'market_share': 'Market Share (%)'},
-    color_discrete_sequence=px.colors.qualitative.Set3
+    values="market_share",
+    names="company",
+    title="Global Market Share Distribution",
+    hover_data=["revenue", "growth"],
+    labels={
+        "revenue": "Revenue (M$)",
+        "growth": "YoY Growth (%)",
+        "market_share": "Market Share (%)",
+    },
+    color_discrete_sequence=px.colors.qualitative.Set3,
 )
 
 # Customize the appearance
 fig.update_traces(
-    textposition='inside',
-    textinfo='percent+label',
-    hovertemplate="<b>%{label}</b><br>" +
-                  "Market Share: %{value:.1f}%<br>" +
-                  "Revenue: $%{customdata[0]:.0f}M<br>" +
-                  "Growth: %{customdata[1]:.1f}%<extra></extra>"
+    textposition="inside",
+    textinfo="percent+label",
+    hovertemplate="<b>%{label}</b><br>"
+    + "Market Share: %{value:.1f}%<br>"
+    + "Revenue: $%{customdata[0]:.0f}M<br>"
+    + "Growth: %{customdata[1]:.1f}%<extra></extra>",
 )
 
-fig.update_layout(
-    title_x=0.5,
-    title_font_size=20,
-    showlegend=False,
-    width=800,
-    height=600
-)
+fig.update_layout(title_x=0.5, title_font_size=20, showlegend=False, width=800, height=600)
 
 fig.show()
 
@@ -112,40 +105,27 @@ Advanced customizations:
 # %%
 # Create custom donut chart
 fig = go.Figure()
-fig.add_trace(go.Pie(
-    labels=df['company'],
-    values=df['market_share'],
-    hole=0.6,  # Creates donut chart
-    textinfo='label+percent',
-    textposition='outside',
-    pull=[0.1 if x > 30 else 0 for x in df['market_share']],  # Pull out larger segments
-    marker=dict(
-        colors=px.colors.qualitative.Bold,
-        line=dict(color='#ffffff', width=2)
+fig.add_trace(
+    go.Pie(
+        labels=df["company"],
+        values=df["market_share"],
+        hole=0.6,  # Creates donut chart
+        textinfo="label+percent",
+        textposition="outside",
+        pull=[0.1 if x > 30 else 0 for x in df["market_share"]],  # Pull out larger segments
+        marker=dict(colors=px.colors.qualitative.Bold, line=dict(color="#ffffff", width=2)),
     )
-))
+)
 
 # Add central text and customize layout
 fig.update_layout(
-    title='Market Distribution<br>(with market leaders highlighted)',
+    title="Market Distribution<br>(with market leaders highlighted)",
     title_x=0.5,
     width=800,
     height=600,
-    annotations=[dict(
-        text='2024<br>Market<br>Share',
-        x=0.5,
-        y=0.5,
-        font_size=20,
-        showarrow=False
-    )],
+    annotations=[dict(text="2024<br>Market<br>Share", x=0.5, y=0.5, font_size=20, showarrow=False)],
     showlegend=True,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    )
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
 )
 
 fig.show()
@@ -180,45 +160,44 @@ df1 = df.copy()  # Use existing data for 2023
 np.random.seed(43)  # Different seed for 2024 data
 market_share_2024 = np.random.dirichlet(np.ones(5)) * 100
 df2 = df.copy()
-df2['market_share'] = market_share_2024
+df2["market_share"] = market_share_2024
 
 # Create subplots
 fig = make_subplots(
-    rows=1, cols=2,
-    specs=[[{'type':'domain'}, {'type':'domain'}]],
-    subplot_titles=('2023 Market Share', '2024 Market Share')
+    rows=1,
+    cols=2,
+    specs=[[{"type": "domain"}, {"type": "domain"}]],
+    subplot_titles=("2023 Market Share", "2024 Market Share"),
 )
 
 # Add first pie chart (2023)
 fig.add_trace(
     go.Pie(
-        labels=df1['company'],
-        values=df1['market_share'],
+        labels=df1["company"],
+        values=df1["market_share"],
         name="2023",
         marker_colors=px.colors.qualitative.Set1,
-        domain={'column': 0}
+        domain={"column": 0},
     ),
-    1, 1
+    1,
+    1,
 )
 
 # Add second pie chart (2024)
 fig.add_trace(
     go.Pie(
-        labels=df2['company'],
-        values=df2['market_share'],
+        labels=df2["company"],
+        values=df2["market_share"],
         name="2024",
         marker_colors=px.colors.qualitative.Set1,
-        domain={'column': 1}
+        domain={"column": 1},
     ),
-    1, 2
+    1,
+    2,
 )
 
 # Update traces and layout
-fig.update_traces(
-    hole=0.4,
-    textposition='inside',
-    textinfo='percent+label'
-)
+fig.update_traces(hole=0.4, textposition="inside", textinfo="percent+label")
 
 fig.update_layout(
     title_text="Market Share Comparison: 2023 vs 2024",
@@ -226,47 +205,11 @@ fig.update_layout(
     width=1200,
     height=600,
     annotations=[
-        dict(text='2023', x=0.18, y=0.5, font_size=20, showarrow=False),
-        dict(text='2024', x=0.82, y=0.5, font_size=20, showarrow=False)
+        dict(text="2023", x=0.18, y=0.5, font_size=20, showarrow=False),
+        dict(text="2024", x=0.82, y=0.5, font_size=20, showarrow=False),
     ],
     showlegend=True,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="center",
-        x=0.5
-    )
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
 )
 
 fig.show()
-
-# %% [markdown]
-"""
-## Summary of Key Concepts
-
-1. Plotly Express (px.pie):
-   - Quick and easy way to create basic pie charts
-   - Good for simple visualizations with built-in interactivity
-   - Excellent for initial data exploration
-
-2. Plotly Graph Objects (go.Pie):
-   - More control over chart elements
-   - Better for custom styling and advanced features
-   - Required for donut charts and pulled segments
-
-3. Subplots with make_subplots:
-   - Enables side-by-side comparison
-   - Allows for complex layouts
-   - Maintains consistent styling across multiple charts
-
-Best Practices:
-- Use clear labels and titles
-- Include interactive elements (hover data)
-- Maintain consistent styling
-- Consider using donut charts for better readability
-- Add appropriate annotations for context
-- Position legends for optimal space usage
-"""
-
-# %%
