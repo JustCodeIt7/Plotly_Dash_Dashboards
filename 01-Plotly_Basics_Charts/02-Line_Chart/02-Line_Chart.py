@@ -118,3 +118,5 @@ fig_subplots.add_trace(
 
 fig_subplots.update_layout(title="Subplots: Electronics vs. Furniture Sales", showlegend=False)
 fig_subplots.show()
+
+# %%
