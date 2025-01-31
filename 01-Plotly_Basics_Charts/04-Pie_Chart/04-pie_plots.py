@@ -1,5 +1,5 @@
 # %% [markdown]
-""" 
+"""
 # Pie Chart in Plotly
 
 This tutorial demonstrates three different approaches to creating pie charts using Plotly:
@@ -213,3 +213,78 @@ fig.update_layout(
 )
 
 fig.show()
+
+# %%
+import plotly.express as px
+import plotly.graph_objects as go
+
+# Sample data for demonstration
+regions = ["North", "South", "East", "West"]
+sales = [25, 30, 18, 27]
+
+# Create a pie chart using Plotly Express (px)
+fig_px = px.pie(
+    values=sales,
+    names=regions,
+    title="Sales Distribution by Region (Plotly Express)",
+    labels={"values": "Sales", "names": "Region"},
+)
+
+# Customize the hover information and text position
+fig_px.update_traces(textposition="inside", textinfo="percent+label")
+fig_px.show()
+
+# %%
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+# Sample data
+categories = ["A", "B", "C", "D"]
+values = [30, 20, 25, 25]
+
+# Plotly Express version
+fig1 = px.pie(
+    values=values,
+    names=categories,
+    title="Plotly Express Pie Chart",
+    color_discrete_sequence=px.colors.qualitative.Set3,
+)
+
+# Plotly Graph Objects version
+fig2 = go.Figure(
+    data=[
+        go.Pie(
+            labels=categories,
+            values=values,
+            hole=0.3,
+            marker=dict(colors=px.colors.qualitative.Set3),
+            textinfo="label+percent",
+            hoverinfo="label+value",
+            showlegend=True,
+        )
+    ]
+)
+fig2.update_layout(title="Plotly Graph Objects Pie Chart")
+
+# Create subplots to show both charts
+fig3 = make_subplots(
+    rows=1,
+    cols=2,
+    subplot_titles=("Plotly Express", "Plotly Graph Objects"),
+    specs=[[{"type": "pie"}, {"type": "pie"}]],
+)
+
+# Add traces to subplots
+fig3.add_trace(go.Pie(labels=categories, values=values), row=1, col=1)
+fig3.add_trace(go.Pie(labels=categories, values=values, hole=0.3), row=1, col=2)
+
+# Update layout
+fig3.update_layout(title_text="Comparison: Plotly Express vs Graph Objects")
+
+# Show all figures
+fig1.show()
+fig2.show()
+fig3.show()
+
+# %%
