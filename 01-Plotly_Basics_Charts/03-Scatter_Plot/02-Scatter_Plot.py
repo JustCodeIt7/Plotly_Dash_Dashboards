@@ -188,3 +188,5 @@ fig_subplots.update_xaxes(title_text="Age (Years)", row=1, col=2)
 fig_subplots.update_yaxes(title_text="Salary (USD)", row=1, col=2)
 
 fig_subplots.show()
+
+# %%
