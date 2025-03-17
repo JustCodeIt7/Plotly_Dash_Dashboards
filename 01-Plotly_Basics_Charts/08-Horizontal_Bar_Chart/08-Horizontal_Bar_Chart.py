@@ -1,5 +1,6 @@
 #%%
 # Horizontal Bar Chart
+import random
 import plotly.express as px
 import pandas as pd
 
@@ -123,4 +124,61 @@ fig3.update_layout(
 )
 
 fig3.show()
+# %%
+# Create sample sales data
+sales_data = pd.DataFrame({
+    'Product': ['Laptops', 'Smartphones', 'Tablets', 'Wearables'],
+    'Revenue': [24000, 18500, 9800, 6700],
+    'Profit Margin (%)': [12.3, 18.7, 9.5, 22.1]
+})
+
+# Create styled horizontal bar chart
+fig = px.bar(sales_data,
+             x='Revenue',
+             y='Product',
+             orientation='h',
+             title='Q4 Product Performance',
+             color='Profit Margin (%)',  # Color by profit margin
+             text_auto=True,             # Show values on bars
+             labels={'Revenue':'Quarterly Revenue (USD)'},
+             color_continuous_scale=px.colors.sequential.Viridis)
+
+fig.update_layout(
+    uniformtext_minsize=8,       # Ensure text fits
+    plot_bgcolor='rgba(0,0,0,0)',# Transparent background
+    yaxis_title=None             # Remove redundant label
+)
+fig.show()
+# %%
+# Create multi-dimensional data
+regions = ['North', 'South', 'East', 'West']
+months = ['Jan', 'Feb', 'Mar']
+
+# Simulated sales data with multiple categories
+df = pd.DataFrame({
+    'Region': regions * 3,
+    'Month': months*4,
+    'Sales': [random.randint(80,150) for _ in range(12)],
+    'Customers': [random.randint(50,120) for _ in range(12)]
+})
+
+# Create interactive horizontal bar chart
+fig = px.bar(df,
+             x='Sales',
+             y='Region',
+             orientation='h',
+             animation_frame='Month',  # Add animation
+             color='Customers',
+             hover_name='Region',      # Custom hover text
+             labels={'Sales':'Monthly Sales'},
+             category_orders={'Month':months})
+
+fig.update_layout(
+    title_text='<b>Regional Sales Performance (Animated)</b>',
+    font_size=10,
+    height=500
+)
+
+# Save as HTML for YouTube demo
+fig.show()
 # %%
