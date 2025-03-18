@@ -3,9 +3,6 @@ import plotly.express as px
 import pandas as pd
 
 # %%
-import plotly.express as px
-import pandas as pd
-
 # Create a simple project schedule dataset
 data = {
     "Task": ["Planning", "Design", "Development", "Testing", "Deployment"],
@@ -35,9 +32,6 @@ fig.update_layout(xaxis_title="Time",
 # Show the plot
 fig.show()
 # %%
-import plotly.express as px
-import pandas as pd
-
 # Create a dataset with multiple resources
 data = {
     "Task": ["Planning", "Planning", "Design", "Design", 
