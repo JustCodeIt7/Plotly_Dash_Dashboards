@@ -190,3 +190,4 @@ cython_debug/
 01-Plotly_Basics_Charts/11-Table/archive/table_chart-v2.py
 01-Plotly_Basics_Charts/11-Table/archive/table_chart-v3.py
 01-Plotly_Basics_Charts/11-Table/archive/table_chart.py
+.DS_Store
