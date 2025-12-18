@@ -1,283 +1,187 @@
-"""
-Simplified Plotly Sankey Diagram Examples
-==========================================
+# %% [markdown]
+# # Plotly Sankey Diagram Examples
+# 
 
-Three progressively complex Sankey diagram examples with clean, reusable code.
-
-Requirements: pip install plotly pandas
-"""
-
+# %%
 import plotly.graph_objects as go
-import pandas as pd
-from typing import List, Dict, Tuple
 
+# %% [markdown]
+# ## Example 1: Basic Sankey Diagram
+# 
+# This opening example keeps the structure simple with two source nodes feeding two targets. It's useful for introducing how link thickness represents the magnitude of each flow and how Plotly handles basic Sankey configuration.
+# 
 
-class SankeyBuilder:
-    """Helper class to build Sankey diagrams with consistent styling."""
-
-    def __init__(self, title: str, width: int = 800, height: int = 500):
-        self.title = title
-        self.width = width
-        self.height = height
-        self.nodes = []
-        self.links = []
-
-    def add_flow(self, source: str, target: str, value: float):
-        """Add a flow between two nodes."""
-        self.links.append({"source": source, "target": target, "value": value})
-
-        # Collect unique nodes
-        for node in [source, target]:
-            if node not in self.nodes:
-                self.nodes.append(node)
-
-    def create_figure(self, node_colors: List[str] = None, link_opacity: float = 0.4) -> go.Figure:
-        """Create the Sankey figure from collected data."""
-
-        # Create node mapping
-        node_map = {node: i for i, node in enumerate(self.nodes)}
-
-        # Convert links to indices
-        source_indices = [node_map[link["source"]] for link in self.links]
-        target_indices = [node_map[link["target"]] for link in self.links]
-        values = [link["value"] for link in self.links]
-
-        # Default colors if none provided
-        if node_colors is None:
-            node_colors = [f"hsl({i * 360 // len(self.nodes)}, 70%, 60%)" for i in range(len(self.nodes))]
-
-        # Create link colors with transparency
-        link_colors = [f"rgba(100, 150, 200, {link_opacity})" for _ in values]
-
-        fig = go.Figure(
-            go.Sankey(
-                node=dict(
-                    pad=20,
-                    thickness=25,
-                    line=dict(color="black", width=1),
-                    label=self.nodes,
-                    color=node_colors[: len(self.nodes)],
-                ),
-                link=dict(source=source_indices, target=target_indices, value=values, color=link_colors),
-            )
-        )
-
-        fig.update_layout(title_text=self.title, font_size=12, width=self.width, height=self.height)
-
-        return fig
-
-
-def create_basic_sankey() -> go.Figure:
-    """Basic energy flow example - perfect for beginners."""
-
-    builder = SankeyBuilder("Basic Sankey: Energy Flow", width=800, height=400)
-
-    # Energy sources to electricity
-    builder.add_flow("Coal", "Electricity", 50)
-    builder.add_flow("Natural Gas", "Electricity", 30)
-    builder.add_flow("Nuclear", "Electricity", 20)
-
-    # Electricity to end uses
-    builder.add_flow("Electricity", "Industry", 60)
-    builder.add_flow("Electricity", "Residential", 40)
-
-    colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#DDA0DD", "#FFD93D"]
-
-    return builder.create_figure(node_colors=colors)
-
-
-def create_intermediate_sankey() -> go.Figure:
-    """Manufacturing process with multiple transformation steps."""
-
-    builder = SankeyBuilder("Intermediate Sankey: Manufacturing Process", width=1000, height=600)
-
-    # Raw materials to processing
-    raw_materials = ["Raw Material A", "Raw Material B", "Raw Material C"]
-    processing_plants = ["Processing Plant 1", "Processing Plant 2"]
-
-    flows = [
-        ("Raw Material A", "Processing Plant 1", 40),
-        ("Raw Material A", "Processing Plant 2", 20),
-        ("Raw Material B", "Processing Plant 1", 35),
-        ("Raw Material B", "Processing Plant 2", 15),
-        ("Raw Material C", "Processing Plant 2", 25),
-        # Processing to products
-        ("Processing Plant 1", "Product X", 25),
-        ("Processing Plant 1", "Product Y", 20),
-        ("Processing Plant 1", "Waste", 10),
-        ("Processing Plant 2", "Product Y", 30),
-        ("Processing Plant 2", "Product Z", 20),
-        ("Processing Plant 2", "Waste", 5),
-        # Products to markets
-        ("Product X", "Domestic Market", 15),
-        ("Product X", "Export Market", 10),
-        ("Product Y", "Domestic Market", 30),
-        ("Product Y", "Export Market", 20),
-        ("Product Z", "Export Market", 20),
-    ]
-
-    for source, target, value in flows:
-        builder.add_flow(source, target, value)
-
-    # Color scheme: materials=red, processing=teal, products=blue, markets=green, waste=purple
-    colors = ["#FF6B6B"] * 3 + ["#4ECDC4"] * 2 + ["#45B7D1"] * 3 + ["#96CEB4"] * 2 + ["#DDA0DD"]
-
-    return builder.create_figure(node_colors=colors, link_opacity=0.3)
-
-
-def create_advanced_sankey() -> go.Figure:
-    """Advanced business revenue flow with custom styling."""
-
-    # Business revenue flow data
-    flows = [
-        # Revenue sources (in millions USD)
-        ("Online Sales", "Operations", 250),
-        ("Retail Stores", "Operations", 180),
-        ("B2B Sales", "Operations", 120),
-        ("Subscriptions", "Operations", 90),
-        ("Partnerships", "Operations", 60),
-        # Operations to cost centers and profit
-        ("Operations", "Marketing", 150),
-        ("Operations", "R&D", 80),
-        ("Operations", "Admin", 100),
-        ("Operations", "Sales", 120),
-        ("Operations", "Gross Profit", 250),
-        # Cost centers contribute to reinvestment
-        ("Marketing", "Reinvestment", 40),
-        ("R&D", "Reinvestment", 60),
-        ("Admin", "Reinvestment", 20),
-        ("Sales", "Reinvestment", 30),
-        # Final profit distribution
-        ("Gross Profit", "Net Profit", 100),
-        ("Gross Profit", "Reinvestment", 80),
-        ("Gross Profit", "Shareholders", 70),
-    ]
-
-    builder = SankeyBuilder("Advanced Sankey: Business Revenue Flow", width=1200, height=700)
-
-    for source, target, value in flows:
-        builder.add_flow(source, target, value)
-
-    # Custom color scheme
-    colors = [
-        "#2E8B57",
-        "#3CB371",
-        "#90EE90",
-        "#98FB98",
-        "#00FA9A",  # Revenue - greens
-        "#FF8C00",  # Operations - orange
-        "#DC143C",
-        "#B22222",
-        "#CD5C5C",
-        "#F08080",  # Costs - reds
-        "#4169E1",
-        "#1E90FF",
-        "#00BFFF",  # Outcomes - blues
-    ]
-
-    fig = builder.create_figure(node_colors=colors, link_opacity=0.4)
-
-    # Enhanced styling for advanced example
-    fig.update_layout(
-        title={
-            "text": "Advanced Sankey: Business Revenue Flow Analysis",
-            "x": 0.5,
-            "font": {"size": 16, "color": "#2C3E50"},
-        },
-        font=dict(size=12, color="#34495E"),
-        plot_bgcolor="#F8F9FA",
-        paper_bgcolor="#FFFFFF",
-        margin=dict(l=50, r=50, t=80, b=50),
+# %%
+# Generate and display a simple Sankey diagram with two sources and two targets.
+def create_basic_sankey():
+    # Define the nodes (the vertical bars).
+    # Each node is identified by its index in the 'label' list (0, 1, 2, 3).
+    node_data = dict(
+        pad=15,  # Vertical padding between nodes in the same column.
+        thickness=20,  # Horizontal width of the node bars.
+        line=dict(color="black", width=0.5),  # Border around the nodes.
+        label=["Source A1", "Source A2", "Target B1", "Target B2"], # Node names.
+        color="blue",  # Uniform color for all nodes.
     )
 
-    return fig
+    # Define the links (the flows between nodes).
+    link_data = dict(
+        # 'source' and 'target' use the indices of the labels defined above.
+        # e.g., source 0 is "Source A1", target 2 is "Target B1".
+        source=[0, 0, 1, 1],  # Starting node indices for each flow.
+        target=[2, 3, 2, 3],  # Ending node indices for each flow.
+        value=[8, 4, 4, 2],   # The volume/magnitude of each flow (determines thickness).
+    )
 
+    # Create the Sankey trace using the node and link definitions.
+    sankey_trace = go.Sankey(
+        node=node_data,
+        link=link_data,
+    )
 
-def create_sankey_from_dataframe(df: pd.DataFrame, source_col: str, target_col: str, value_col: str) -> go.Figure:
-    """Create Sankey diagram from pandas DataFrame - great for real data."""
+    # Initialize the figure with the Sankey trace.
+    fig = go.Figure(data=[sankey_trace])
 
-    builder = SankeyBuilder("Data-Driven Sankey: Customer Journey")
+    # Update layout settings like title and font.
+    fig.update_layout(title_text="Example 1: Basic Sankey Diagram", font_size=12)
+    
+    # Display the interactive plot.
+    fig.show()
 
-    for _, row in df.iterrows():
-        builder.add_flow(row[source_col], row[target_col], row[value_col])
+# %%
+create_basic_sankey()
 
-    return builder.create_figure()
+# %% [markdown]
+# ## Example 2: Multi-Level Sankey Diagram
+# 
+# This version adds an intermediate stage so you can trace how volume moves from multiple inputs, through transit nodes, and into final destinations. It's handy for highlighting branching and convergence across different levels in a process.
+# 
 
+# %%
+################################ Multi-Level Sankey Diagram ################################
 
-def run_examples():
-    """Run all Sankey diagram examples."""
+# Generate a Sankey diagram with an intermediate stage between sources and targets.
+def create_multilevel_sankey():
+    # Define nodes for three levels: Source -> Intermediate -> Target.
+    # Indices: 0,1 (Sources) | 2,3 (Intermediate) | 4,5 (Targets)
+    node_data = dict(
+        pad=25, # Increased padding for better separation.
+        thickness=20,
+        line=dict(color="black", width=0.5),
+        label=[
+            "Source A",      # Index 0
+            "Source B",      # Index 1
+            "Intermediate C", # Index 2
+            "Intermediate D", # Index 3
+            "Target E",      # Index 4
+            "Target F",      # Index 5
+        ],
+    )
 
-    examples = [
-        ("Basic", create_basic_sankey),
-        ("Intermediate", create_intermediate_sankey),
-        ("Advanced", create_advanced_sankey),
+    # Define links that connect across the three levels.
+    link_data = dict(
+        # Flows: A->C, B->C, B->D, C->E, C->F, D->F
+        source=[0, 1, 1, 2, 2, 3], # Source indices
+        target=[2, 2, 3, 4, 5, 5], # Target indices
+        value=[10, 5, 15, 8, 7, 15], # Flow volumes
+    )
+
+    # Initialize the Sankey object.
+    sankey_trace = go.Sankey(
+        node=node_data,
+        link=link_data,
+    )
+
+    # Create the figure.
+    fig = go.Figure(data=[sankey_trace])
+
+    # Set the title and font size.
+    fig.update_layout(title_text="Example 2: Multi-Level Sankey Diagram", font_size=12)
+    
+    # Render the diagram.
+    fig.show()
+
+################################ Customized Sankey Diagram ################################
+
+# %%
+create_multilevel_sankey()
+
+# %% [markdown]
+# ## Example 3: Customized Energy Flow Sankey
+# 
+# Here the focus is on styling: distinct node colors identify each energy type while translucent links keep the diagram legible. Use this pattern when you need to clarify categories or emphasize specific pathways with custom palettes.
+# 
+
+# %%
+# Generate a Sankey with custom colors for nodes and links.
+def create_customized_sankey():
+    # Define labels for energy sources, the grid, and end-use sectors.
+    labels = [
+        "Coal",             # 0
+        "Natural Gas",      # 1
+        "Solar",            # 2
+        "Electricity Grid", # 3
+        "Residential",      # 4
+        "Industrial",       # 5
     ]
 
-    figures = {}
+    # Define custom colors for each node using RGBA (Red, Green, Blue, Alpha/Transparency).
+    # Alpha 0.8 makes the nodes slightly translucent.
+    node_colors = [
+        "rgba(102, 102, 102, 0.8)",  # Coal (grey)
+        "rgba(25, 128, 180, 0.8)",  # Natural Gas (blue)
+        "rgba(255, 185, 60, 0.8)",  # Solar (yellow)
+        "rgba(60, 180, 75, 0.8)",   # Grid (green)
+        "rgba(230, 25, 75, 0.8)",   # Residential (red)
+        "rgba(145, 30, 180, 0.8)",  # Industrial (purple)
+    ]
 
-    for name, func in examples:
-        try:
-            print(f"Creating {name} Sankey diagram...")
-            fig = func()
-            fig.show()
-            figures[name] = fig
-            print(f"✅ {name} diagram created successfully!")
+    # Define colors for the links. 
+    # Using a lower Alpha (0.4) makes the links more transparent than the nodes.
+    link_colors = [
+        "rgba(102, 102, 102, 0.4)", # Coal to Grid
+        "rgba(25, 128, 180, 0.4)",  # Gas to Grid
+        "rgba(255, 185, 60, 0.4)",  # Solar to Grid
+        "rgba(60, 180, 75, 0.4)",   # Grid to Residential
+        "rgba(60, 180, 75, 0.4)",   # Grid to Industrial
+    ]
 
-        except Exception as e:
-            print(f"❌ Error creating {name} diagram: {e}")
+    node_data = dict(
+        pad=15,
+        thickness=20,
+        line=dict(color="black", width=0.5),
+        label=labels,
+        color=node_colors,  # Apply the custom node colors list.
+    )
 
-    # Bonus: DataFrame example
-    try:
-        print("\nCreating DataFrame-based Sankey...")
-        sample_data = pd.DataFrame({
-            "source": [
-                "Website",
-                "Website",
-                "Social Media",
-                "Social Media",
-                "Email",
-                "Email",
-                "Leads",
-                "Leads",
-                "Customers",
-                "Customers",
-            ],
-            "target": [
-                "Leads",
-                "Bounce",
-                "Leads",
-                "Bounce",
-                "Leads",
-                "Bounce",
-                "Customers",
-                "Lost",
-                "Retained",
-                "Churned",
-            ],
-            "value": [500, 1500, 300, 700, 200, 100, 400, 600, 320, 80],
-        })
+    link_data = dict(
+        source=[0, 1, 2, 3, 3], # Indices of starting nodes.
+        target=[3, 3, 3, 4, 5], # Indices of ending nodes.
+        value=[45, 30, 15, 50, 40], # Flow values.
+        color=link_colors,  # Apply the custom link colors list.
+    )
 
-        df_fig = create_sankey_from_dataframe(sample_data, "source", "target", "value")
-        df_fig.show()
-        figures["DataFrame"] = df_fig
-        print("✅ DataFrame diagram created successfully!")
+    sankey_trace = go.Sankey(
+        # 'arrangement' controls how nodes are positioned. 
+        # "snap" helps align nodes to a grid for a cleaner look.
+        arrangement="snap",  
+        node=node_data,
+        link=link_data,
+    )
 
-    except Exception as e:
-        print(f"❌ Error creating DataFrame diagram: {e}")
+    fig = go.Figure(data=[sankey_trace])
 
-    return figures
+    # Configure the chart's title and font size.
+    fig.update_layout(
+        title_text="Example 3: Customized Energy Flow Sankey", font_size=12
+    )
+    
+    # Render the Sankey diagram.
+    fig.show()
+
+# %%
+create_customized_sankey()
 
 
-if __name__ == "__main__":
-    print("🎯 Simplified Plotly Sankey Diagram Examples")
-    print("=" * 50)
 
-    figures = run_examples()
-
-    print(f"\n✅ Created {len(figures)} Sankey diagrams!")
-    print("\n💡 Key improvements in this refactored version:")
-    print("   • SankeyBuilder class eliminates code duplication")
-    print("   • Cleaner data structure with simple tuples")
-    print("   • Consistent styling across all examples")
-    print("   • Better error handling and user feedback")
-    print("   • Easy DataFrame integration for real data")
+# %%
