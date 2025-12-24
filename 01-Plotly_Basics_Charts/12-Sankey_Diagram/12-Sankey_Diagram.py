@@ -1,5 +1,5 @@
 # %% [markdown]
-# # Plotly Sankey Diagram Examples
+# # Plotly Sankey Diagram
 # 
 
 # %%
@@ -9,7 +9,13 @@ import plotly.graph_objects as go
 # ## Example 1: Basic Sankey Diagram
 # 
 # This opening example keeps the structure simple with two source nodes feeding two targets. It's useful for introducing how link thickness represents the magnitude of each flow and how Plotly handles basic Sankey configuration.
-# 
+# - A Sankey diagram is a flow diagram where arrow (link) width is proportional to the amount of flow.
+# - It shows movement between stages or entities (e.g., energy, materials, money).
+# - Built from nodes (sources/targets, often rectangles/labels) and links/arrows (the flows).
+# - Best for visualizing resource distribution, energy loss, supply chains, and user journeys.
+# - Link thickness indicates magnitude, making the biggest transfers immediately obvious.
+# - Named after Captain Matthew Henry Phineas Riall Sankey.
+# - Common uses include energy management, marketing/analytics, and economics.
 
 # %%
 # Generate and display a simple Sankey diagram with two sources and two targets.
@@ -19,7 +25,7 @@ def create_basic_sankey():
     node_data = dict(
         pad=15,  # Vertical padding between nodes in the same column.
         thickness=20,  # Horizontal width of the node bars.
-        line=dict(color="black", width=0.5),  # Border around the nodes.
+        line=dict(color="red", width=0.5),  # Border around the nodes.
         label=["Source A1", "Source A2", "Target B1", "Target B2"], # Node names.
         color="blue",  # Uniform color for all nodes.
     )
@@ -48,7 +54,6 @@ def create_basic_sankey():
     # Display the interactive plot.
     fig.show()
 
-# %%
 create_basic_sankey()
 
 # %% [markdown]
@@ -81,9 +86,9 @@ def create_multilevel_sankey():
     # Define links that connect across the three levels.
     link_data = dict(
         # Flows: A->C, B->C, B->D, C->E, C->F, D->F
-        source=[0, 1, 1, 2, 2, 3], # Source indices
-        target=[2, 2, 3, 4, 5, 5], # Target indices
-        value=[10, 5, 15, 8, 7, 15], # Flow volumes
+        source=[0, 1, 1, 2, 2, 3, 3], # Source indices
+        target=[2, 2, 3, 4, 5, 5, 4], # Target indices
+        value=[10, 5, 15, 8, 7, 15, ], # Flow volumes
     )
 
     # Initialize the Sankey object.
@@ -103,7 +108,7 @@ def create_multilevel_sankey():
 
 ################################ Customized Sankey Diagram ################################
 
-# %%
+
 create_multilevel_sankey()
 
 # %% [markdown]
@@ -178,8 +183,6 @@ def create_customized_sankey():
     
     # Render the Sankey diagram.
     fig.show()
-
-# %%
 create_customized_sankey()
 
 
